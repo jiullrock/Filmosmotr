@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Фильмосмотр - Генератор иконок</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .preview-section {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .icon-preview {
+            display: inline-block;
+            margin: 10px;
+            vertical-align: top;
+        }
+        
+        .icon-preview img {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            padding: 5px;
+        }
+        
+        .icon-preview p {
+            margin: 10px 0 0 0;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .generate-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .download-section {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .download-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .download-link {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            border: 2px solid #4caf50;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .download-link:hover {
+            background: #4caf50;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .instructions h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        
+        .instructions ol {
+            color: #856404;
+        }
+        
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Генератор иконок для Фильмосмотр</h1>
+        
+        <div class="preview-section">
+            <h2>Предварительный просмотр</h2>
+            <div id="preview-container">
+                <div class="icon-preview">
+                    <img id="preview-16" width="16" height="16" alt="16x16">
+                    <p>16×16</p>
+                </div>
+                <div class="icon-preview">
+                    <img id="preview-32" width="32" height="32" alt="32x32">
+                    <p>32×32</p>
+                </div>
+                <div class="icon-preview">
+                    <img id="preview-48" width="48" height="48" alt="48x48">
+                    <p>48×48</p>
+                </div>
+                <div class="icon-preview">
+                    <img id="preview-128" width="128" height="128" alt="128x128">
+                    <p>128×128</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="generate-section">
+            <button id="generate-btn" onclick="generateIcons()">
+                🚀 Генерировать иконки
+            </button>
+            <div id="status"></div>
+        </div>
+        
+        <div id="download-section" class="download-section" style="display: none;">
+            <h3>✅ Иконки готовы к скачиванию!</h3>
+            <p>Нажмите на кнопки ниже, чтобы скачать иконки в нужных размерах:</p>
+            <div class="download-links">
+                <a id="download-16" href="#" download="icon16.png" class="download-link">
+                    📱 Скачать 16×16
+                </a>
+                <a id="download-32" href="#" download="icon32.png" class="download-link">
+                    🖥️ Скачать 32×32
+                </a>
+                <a id="download-48" href="#" download="icon48.png" class="download-link">
+                    🖼️ Скачать 48×48
+                </a>
+                <a id="download-128" href="#" download="icon128.png" class="download-link">
+                    🎨 Скачать 128×128
+                </a>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>📋 Инструкции по установке</h3>
+            <ol>
+                <li>Сгенерируйте и скачайте все 4 размера иконок</li>
+                <li>Поместите файлы в папку <code>icons/</code> вашего расширения</li>
+                <li>Убедитесь, что в <code>manifest.json</code> указаны правильные пути:
+                    <pre>"icons": {
+  "16": "icons/icon16.png",
+  "32": "icons/icon32.png", 
+  "48": "icons/icon48.png",
+  "128": "icons/icon128.png"
+}</pre>
+                </li>
+                <li>Обновите расширение в Chrome</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Hidden canvas elements for generation -->
+    <canvas id="canvas-16" width="16" height="16"></canvas>
+    <canvas id="canvas-32" width="32" height="32"></canvas>
+    <canvas id="canvas-48" width="48" height="48"></canvas>
+    <canvas id="canvas-128" width="128" height="128"></canvas>
+
+    <script>
+        // SVG content for the icon
+        const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="50%" style="stop-color:#764ba2"/>
+      <stop offset="100%" style="stop-color:#f093fb"/>
+    </linearGradient>
+    <linearGradient id="filmGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2c3e50"/>
+      <stop offset="100%" style="stop-color:#34495e"/>
+    </linearGradient>
+    <linearGradient id="highlightGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </linearGradient>
+    <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <circle cx="64" cy="64" r="60" fill="url(#mainGradient)" filter="url(#dropShadow)"/>
+  <rect x="20" y="45" width="88" height="38" rx="4" fill="url(#filmGradient)"/>
+  <rect x="24" y="49" width="4" height="6" rx="1" fill="#1a252f"/>
+  <rect x="24" y="57" width="4" height="6" rx="1" fill="#1a252f"/>
+  <rect x="24" y="65" width="4" height="6" rx="1" fill="#1a252f"/>
+  <rect x="24" y="73" width="4" height="6" rx="1" fill="#1a252f"/>
+  <rect x="100" y="49" width="4" height="6" rx="1" fill="#1a252f"/>
+  <rect x="100" y="57" width="4" height="6" rx="1" fill="#1a252f"/>
+  <rect x="100" y="65" width="4" height="6" rx="1" fill="#1a252f"/>
+  <rect x="100" y="73" width="4" height="6" rx="1" fill="#1a252f"/>
+  <rect x="34" y="50" width="18" height="14" fill="#ffffff" opacity="0.9"/>
+  <rect x="56" y="50" width="18" height="14" fill="#ffffff" opacity="0.9"/>
+  <rect x="78" y="50" width="18" height="14" fill="#ffffff" opacity="0.9"/>
+  <rect x="34" y="68" width="18" height="14" fill="#ffffff" opacity="0.9"/>
+  <rect x="56" y="68" width="18" height="14" fill="#ffffff" opacity="0.9"/>
+  <rect x="78" y="68" width="18" height="14" fill="#ffffff" opacity="0.9"/>
+  <circle cx="64" cy="64" r="16" fill="#ffffff" opacity="0.95"/>
+  <polygon points="58,56 58,72 74,64" fill="url(#mainGradient)"/>
+  <circle cx="44" cy="28" r="8" fill="#ffffff" opacity="0.9"/>
+  <ellipse cx="44" cy="28" rx="6" ry="4" fill="#667eea"/>
+  <circle cx="44" cy="28" r="3" fill="#2c3e50"/>
+  <circle cx="45" cy="27" r="1.5" fill="#ffffff"/>
+  <g transform="translate(84, 20)">
+    <polygon points="8,2 10,6 14,6 11,9 12,13 8,11 4,13 5,9 2,6 6,6" 
+             fill="#ffd700" stroke="#ffb300" stroke-width="1"/>
+  </g>
+  <circle cx="64" cy="64" r="60" fill="url(#highlightGradient)"/>
+  <circle cx="64" cy="64" r="60" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>`;
+
+        function showStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+        }
+
+        function generateIconAtSize(size) {
+            return new Promise((resolve, reject) => {
+                const canvas = document.getElementById(`canvas-${size}`);
+                const ctx = canvas.getContext('2d');
+                
+                // Create an image from SVG
+                const img = new Image();
+                const svgBlob = new Blob([svgContent], {type: 'image/svg+xml;charset=utf-8'});
+                const url = URL.createObjectURL(svgBlob);
+                
+                img.onload = function() {
+                    // Clear canvas
+                    ctx.clearRect(0, 0, size, size);
+                    
+                    // Draw image
+                    ctx.drawImage(img, 0, 0, size, size);
+                    
+                    // Convert to blob
+                    canvas.toBlob(function(blob) {
+                        const dataUrl = canvas.toDataURL('image/png');
+                        
+                        // Update preview
+                        document.getElementById(`preview-${size}`).src = dataUrl;
+                        
+                        // Setup download link
+                        const downloadLink = document.getElementById(`download-${size}`);
+                        downloadLink.href = dataUrl;
+                        
+                        URL.revokeObjectURL(url);
+                        resolve(dataUrl);
+                    }, 'image/png');
+                };
+                
+                img.onerror = function() {
+                    URL.revokeObjectURL(url);
+                    reject(new Error(`Failed to load SVG for size ${size}`));
+                };
+                
+                img.src = url;
+            });
+        }
+
+        async function generateIcons() {
+            const generateBtn = document.getElementById('generate-btn');
+            const downloadSection = document.getElementById('download-section');
+            
+            generateBtn.disabled = true;
+            generateBtn.textContent = '⏳ Генерация...';
+            downloadSection.style.display = 'none';
+            
+            try {
+                showStatus('Генерация иконок...', 'success');
+                
+                const sizes = [16, 32, 48, 128];
+                for (const size of sizes) {
+                    await generateIconAtSize(size);
+                    showStatus(`Готово: ${size}×${size}`, 'success');
+                }
+                
+                downloadSection.style.display = 'block';
+                showStatus('✅ Все иконки успешно сгенерированы!', 'success');
+                
+            } catch (error) {
+                console.error('Error generating icons:', error);
+                showStatus('❌ Ошибка при генерации иконок', 'error');
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = '🚀 Генерировать иконки';
+            }
+        }
+
+        // Auto-generate on page load
+        window.addEventListener('load', () => {
+            setTimeout(generateIcons, 500);
+        });
+    </script>
+</body>
+</html>

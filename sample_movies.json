@@ -1,0 +1,47 @@
+[
+  {
+    "id": 100,
+    "title": "Мстители: Финал",
+    "type": "movie",
+    "genre": "action",
+    "watched": false,
+    "favorite": false,
+    "dateAdded": "2024-01-15T10:30:00.000Z"
+  },
+  {
+    "id": 101,
+    "title": "Душа",
+    "type": "cartoon",
+    "genre": "animation",
+    "watched": true,
+    "favorite": true,
+    "dateAdded": "2024-01-16T12:45:00.000Z"
+  },
+  {
+    "id": 102,
+    "title": "Тёмные начала",
+    "type": "series",
+    "genre": "fantasy",
+    "watched": false,
+    "favorite": false,
+    "dateAdded": "2024-01-17T09:15:00.000Z"
+  },
+  {
+    "id": 103,
+    "title": "Побег из Шоушенка",
+    "type": "movie",
+    "genre": "drama",
+    "watched": false,
+    "favorite": true,
+    "dateAdded": "2024-01-18T14:20:00.000Z"
+  },
+  {
+    "id": 104,
+    "title": "Зверополис",
+    "type": "cartoon",
+    "genre": "animation",
+    "watched": true,
+    "favorite": true,
+    "dateAdded": "2024-01-19T16:30:00.000Z"
+  }
+]

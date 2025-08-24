@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="appTitle">Фильмосмотр</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 data-i18n="appTitle">🎬 Фильмосмотр</h1>
+            <div class="header-buttons">
+                <button id="add-movie-btn" class="btn btn-primary" data-i18n="addButton">➕ Добавить</button>
+                <button id="import-btn" class="btn btn-secondary" data-i18n="importButton">📁 Импорт</button>
+                <button id="export-btn" class="btn btn-secondary" data-i18n="exportButton">💾 Экспорт</button>
+                <button id="settings-btn" class="btn btn-secondary" data-i18n="settingsButton">⚙️ Настройки</button>
+            </div>
+        </header>
+
+        <!-- Форма добавления фильма -->
+        <div id="add-movie-form" class="add-form hidden">
+            <h3 data-i18n="addMovieTitle">Добавить фильм</h3>
+            <input type="text" id="movie-title" data-i18n="movieTitlePlaceholder" placeholder="Название фильма" required>
+            <select id="movie-type" required>
+                <option value="" data-i18n="selectType">Выберите тип</option>
+                <option value="movie" data-i18n="typeMovie">🎬 Фильм</option>
+                <option value="cartoon" data-i18n="typeCartoon">🎨 Мультфильм</option>
+                <option value="series" data-i18n="typeSeries">📺 Сериал</option>
+            </select>
+            <select id="movie-genre" required>
+                <option value="" data-i18n="selectGenre">Выберите жанр</option>
+                <option value="action" data-i18n="genreAction">Боевик</option>
+                <option value="adventure" data-i18n="genreAdventure">Приключения</option>
+                <option value="comedy" data-i18n="genreComedy">Комедия</option>
+                <option value="drama" data-i18n="genreDrama">Драма</option>
+                <option value="horror" data-i18n="genreHorror">Ужасы</option>
+                <option value="thriller" data-i18n="genreThriller">Триллер</option>
+                <option value="fantasy" data-i18n="genreFantasy">Фэнтези</option>
+                <option value="sci-fi" data-i18n="genreSciFi">Фантастика</option>
+                <option value="romance" data-i18n="genreRomance">Романтика</option>
+                <option value="animation" data-i18n="genreAnimation">Анимация</option>
+                <option value="documentary" data-i18n="genreDocumentary">Документальный</option>
+                <option value="crime" data-i18n="genreCrime">Криминал</option>
+            </select>
+            <div class="form-buttons">
+                <button id="cancel-add-btn" class="btn btn-secondary" data-i18n="cancelButton">Отмена</button>
+                <button id="save-movie-btn" class="btn btn-primary" data-i18n="saveButton">Сохранить</button>
+            </div>
+        </div>
+
+        <!-- Вкладки жанров -->
+        <div class="tabs">
+            <button class="tab-btn active" data-genre="all" data-i18n="genreAll">Все</button>
+            <button class="tab-btn" data-genre="favorites" data-i18n="genreFavorites" data-i18n-title="addToFavorites">⭐</button>
+            <button class="tab-btn" data-genre="action" data-i18n="genreAction">Боевик</button>
+            <button class="tab-btn" data-genre="comedy" data-i18n="genreComedy">Комедия</button>
+            <button class="tab-btn" data-genre="drama" data-i18n="genreDrama">Драма</button>
+            <button class="tab-btn" data-genre="horror" data-i18n="genreHorror">Ужасы</button>
+            <button class="tab-btn" data-genre="fantasy" data-i18n="genreFantasy">Фэнтези</button>
+            <button class="tab-btn" data-genre="sci-fi" data-i18n="genreSciFi">Фантастика</button>
+            <button class="tab-btn" data-genre="romance" data-i18n="genreRomance">Романтика</button>
+            <button class="tab-btn" data-genre="thriller" data-i18n="genreThriller">Триллер</button>
+            <button class="tab-btn" data-genre="animation" data-i18n="genreAnimation">Анимация</button>
+            <button class="tab-btn" data-genre="documentary" data-i18n="genreDocumentary">Документальный</button>
+            <button class="tab-btn" data-genre="crime" data-i18n="genreCrime">Криминал</button>
+            <button class="tab-btn" data-genre="adventure" data-i18n="genreAdventure">Приключения</button>
+        </div>
+
+        <!-- Список фильмов -->
+        <div class="movies-list" id="movies-list">
+            <div class="empty-state">
+                <p data-i18n="emptyListTitle">📽️ Список фильмов пуст</p>
+                <p data-i18n="emptyListSubtitle">Добавьте свой первый фильм!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно импорта -->
+    <div id="import-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 data-i18n="importModalTitle">Выберите фильмы для импорта</h3>
+            <div id="import-list"></div>
+            <div class="modal-buttons">
+                <button id="import-selected-btn" class="btn btn-primary" data-i18n="addSelectedButton">Добавить выбранные</button>
+                <button id="import-replace-btn" class="btn btn-secondary" data-i18n="replaceAllButton">Заменить полностью</button>
+                <button id="import-cancel-btn" class="btn btn-secondary" data-i18n="cancelButton">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрытый input для импорта файлов -->
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+
+    <script src="i18n.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>

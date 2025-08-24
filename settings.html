@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="settingsTitle">Настройки - Фильмосмотр</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .settings-container {
+            background: #fff;
+            height: 584px;
+            max-height: 584px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .settings-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 20px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            height: 80px;
+            max-height: 80px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .settings-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        .setting-group {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .setting-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #495057;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .setting-description {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+            background: #fff;
+        }
+
+        .setting-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .setting-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .setting-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .template-preview {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #495057;
+            font-family: monospace;
+        }
+
+        .save-settings-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .save-settings-btn:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+        }
+
+        .save-settings-btn:active {
+            transform: translateY(0);
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 10px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .reset-btn:hover {
+            background: #5a6268;
+        }
+
+        .donate-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <header class="settings-header">
+            <button id="back-btn" class="back-btn" data-i18n="backButton">
+                ← Назад
+            </button>
+            <h1 style="margin: 0; font-size: 18px;" data-i18n="settingsTitle">⚙️ Настройки</h1>
+            <div style="width: 60px;"></div> <!-- Spacer for centering -->
+        </header>
+
+        <div class="settings-content">
+            <!-- Language Setting -->
+            <div class="setting-group">
+                <label class="setting-label" for="language-select" data-i18n="languageLabel">Язык интерфейса</label>
+                <div class="setting-description" data-i18n="languageDescription">
+                    Выберите язык для интерфейса расширения
+                </div>
+                <select id="language-select" class="setting-select">
+                    <option value="ru" data-i18n="languageRussian">🇷🇺 Русский</option>
+                    <option value="en" data-i18n="languageEnglish">🇺🇸 English</option>
+                </select>
+            </div>
+
+            <!-- Search Engine Setting -->
+            <div class="setting-group">
+                <label class="setting-label" for="search-engine-select" data-i18n="searchEngineLabel">Поисковая система</label>
+                <div class="setting-description" data-i18n="searchEngineDescription">
+                    Выберите поисковую систему для поиска фильмов
+                </div>
+                <select id="search-engine-select" class="setting-select">
+                    <option value="yandex" data-i18n="searchEngineYandex">🟡 Yandex</option>
+                    <option value="google" data-i18n="searchEngineGoogle">🔍 Google</option>
+                    <option value="bing" data-i18n="searchEngineBing">🔷 Bing</option>
+                    <option value="duckduckgo" data-i18n="searchEngineDuckDuckGo">🦆 DuckDuckGo</option>
+                </select>
+            </div>
+
+            <!-- Search Template Setting -->
+            <div class="setting-group">
+                <label class="setting-label" for="search-template-input" data-i18n="searchTemplateLabel">Шаблон поискового запроса</label>
+                <div class="setting-description" data-i18n="searchTemplateDescription">
+                    Настройте шаблон для поиска. Используйте <strong>*name*</strong> для названия фильма
+                </div>
+                <input 
+                    type="text" 
+                    id="search-template-input" 
+                    class="setting-input"
+                    data-i18n="searchTemplatePlaceholder"
+                    placeholder="смотреть *name* онлайн"
+                    value="смотреть *name* онлайн"
+                >
+                <div id="template-preview" class="template-preview">
+                    Пример: смотреть Интерстеллар онлайн
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <button id="save-settings-btn" class="save-settings-btn" data-i18n="saveSettingsButton">
+                💾 Сохранить настройки
+            </button>
+
+            <!-- Reset Button -->
+            <button id="reset-settings-btn" class="reset-btn" data-i18n="resetSettingsButton">
+                🔄 Сбросить к значениям по умолчанию
+            </button>
+
+            <!-- Donate Button -->
+            <button id="donate-btn" class="donate-btn" data-i18n="donateButton">
+                💝 Донат
+            </button>
+        </div>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>
