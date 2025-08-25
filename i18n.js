@@ -175,7 +175,7 @@ class I18n {
                 searchEngineDescription: 'Select search engine for movie searches',
                 searchTemplateLabel: 'Search query template',
                 searchTemplateDescription: 'Customize search template. Use *name* for movie title',
-                searchTemplatePlaceholder: 'watch *name* online',
+                searchTemplatePlaceholder: 'watch online *name*',
                 saveSettingsButton: '💾 Save settings',
                 resetSettingsButton: '🔄 Reset to defaults',
                 

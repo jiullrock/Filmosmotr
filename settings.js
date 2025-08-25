@@ -6,6 +6,12 @@ class Settings {
             searchTemplate: 'смотреть *name* онлайн'
         };
         
+        // Шаблоны по умолчанию для каждого языка
+        this.defaultTemplates = {
+            ru: 'смотреть *name* онлайн',
+            en: 'watch online *name*'
+        };
+        
         this.searchEngines = {
             yandex: 'https://yandex.ru/search/?text=',
             google: 'https://www.google.com/search?q=',
@@ -59,7 +65,13 @@ class Settings {
 
         // Language change listener
         document.getElementById('language-select').addEventListener('change', (e) => {
-            i18n.setLanguage(e.target.value);
+            const newLanguage = e.target.value;
+            
+            // Обновляем шаблон поиска на значение по умолчанию для нового языка
+            const templateInput = document.getElementById('search-template-input');
+            templateInput.value = this.defaultTemplates[newLanguage] || this.defaultTemplates.ru;
+            
+            i18n.setLanguage(newLanguage);
             i18n.updateDOM();
             this.updateTemplatePreview();
         });
@@ -121,6 +133,10 @@ class Settings {
     resetSettings() {
         if (confirm(i18n.t('resetSettingsConfirm'))) {
             this.currentSettings = { ...this.defaultSettings };
+            
+            // Обновляем шаблон поиска для текущего языка
+            this.currentSettings.searchTemplate = this.defaultTemplates[this.currentSettings.language] || this.defaultTemplates.ru;
+            
             this.updateUI();
             i18n.setLanguage(this.currentSettings.language);
             i18n.updateDOM();
@@ -201,22 +217,41 @@ class Settings {
 
     // Static method to get settings (for use in other files)
     static async getSettings() {
+        const defaultTemplates = {
+            ru: 'смотреть *name* онлайн',
+            en: 'watch online *name*'
+        };
+        
         const defaultSettings = {
             language: 'ru',
             searchEngine: 'yandex',
-            searchTemplate: 'смотреть *name* онлайн'
+            searchTemplate: defaultTemplates.ru
         };
 
         try {
             const result = await chrome.storage.local.get(['settings']);
-            return { ...defaultSettings, ...result.settings };
+            const settings = { ...defaultSettings, ...result.settings };
+            
+            // Если шаблон не задан, используем значение по умолчанию для языка
+            if (!settings.searchTemplate || !settings.searchTemplate.includes('*name*')) {
+                settings.searchTemplate = defaultTemplates[settings.language] || defaultTemplates.ru;
+            }
+            
+            return settings;
         } catch (error) {
             console.error('Error loading settings:', error);
             // Fallback to localStorage for testing
             try {
                 const stored = localStorage.getItem('filmosmotr_settings');
                 if (stored) {
-                    return { ...defaultSettings, ...JSON.parse(stored) };
+                    const settings = { ...defaultSettings, ...JSON.parse(stored) };
+                    
+                    // Если шаблон не задан, используем значение по умолчанию для языка
+                    if (!settings.searchTemplate || !settings.searchTemplate.includes('*name*')) {
+                        settings.searchTemplate = defaultTemplates[settings.language] || defaultTemplates.ru;
+                    }
+                    
+                    return settings;
                 }
             } catch (e) {
                 console.error('Error loading from localStorage:', e);
